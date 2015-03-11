@@ -1,0 +1,91 @@
+\documentclass[]{letter}
+\usepackage[a4paper,portrait, left=2.0cm, right=2.0cm, top=2.0cm, vscale=1.00]{geometry}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+
+\usepackage{graphicx}
+\usepackage[francais]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{fontspec}
+
+\defaultfontfeatures{%
+  RawFeature={%
+    +calt   % *Contextual alternates
+    ,+clig  % *contextual ligatures
+    ,+ccmp  % *composition & decomposition
+    ,+tlig  % 'tex-ligatures': `` '' -- --- !` ?` << >>
+    ,+cv06  % narrow guillemets
+    }%
+  }
+
+
+%% Load Microtype with default settings. This will use the
+%% EB-Garamond protrusion definitions if present.
+\usepackage{microtype}
+\usepackage{xunicode}
+\usepackage{datatool}
+\usepackage{tcolorbox}
+
+\usepackage{tikz,amsmath,amssymb}
+\usetikzlibrary{decorations.text}
+\begin{document}
+\newtcolorbox{mybox}{colback=white,colframe=gray}
+\setsansfont{Fontin Sans}\setromanfont{Fontin}
+
+--
+
+\bigskip
+\bigskip
+\bigskip
+\par
+\DTLloaddb{names}{list.csv}
+\DTLforeach{names}{\dish=Dish,\date=Date,\dluo=Dluo,\content=Content}{%
+\begin{minipage}[b]{0.40\textwidth}
+\begin{mybox}
+\parbox{\textwidth}{%
+\center
+\begin{tikzpicture}
+\setromanfont{Fontin SmallCaps}
+\begin{scope}
+\draw[color=gray,fill=JungleGreen] (2.3,0) arc (0:180:2.3cm);
+\draw[color=gray,fill=white] (1.8,0) arc (0:180:1.8cm);
+\end{scope}
+\draw[color=gray] (1.70,0) arc (0:180:1.7cm) node at (1.7,0) {};
+\node at (0,1.2) {\large\color{gray} since};
+\node at (0,0.8) {\large\color{gray}{1965}};
+\draw[color=gray] (2.40,0) arc (0:180:2.40cm);
+\path
+    [
+        postaction={decorate, decoration={
+                raise=-7pt,
+                text along path, reverse path=true, text align/align=center, text align/right indent={0.0cm},
+                text={| \color{white} |• Les conserves du Miradou • }
+            }
+        }
+    ]
+    [
+        postaction={
+            decorate, decoration={
+                raise=-5.5pt,
+                text along path, text align/align=center, text align/left indent={9.7818575934488693773110623190025cm}, % \pi * radius + .2cm text align/right indent={.2cm},
+            }
+        }
+    ] (2.20,0) arc (0:180:2.20cm);
+\end{tikzpicture}
+{
+\parbox[c][3em][t]{0.8\textwidth}{\centering\fontsize{12}{18}\color{JungleGreen}\sffamily\bfseries\dish}\bigskip\par
+\fontsize{5}{8}\rmfamily
+{\centering\hfill\fcolorbox{gray}{white}{\parbox[c][3em][c]{0.38\textwidth}{\raggedright Préparé le : \date\\ DLUO : \dluo}}\hfill}
+\par\vfill\bigskip
+{
+\centering\hfill\parbox[c][8em][t]{0.80\textwidth}{\rmfamily Composition : \content}\hfill}%
+}
+{\centering\color{gray}\hrule 
+\vspace{0.5mm}\centering\fcolorbox{gray}{JungleGreen}{\parbox[c][1ex][b]{0.95\textwidth}{\center\color{white}\fontsize{8}{6}\rmfamily\bfseries  Proudly made by me, myself \& I.}}\vspace{0.5mm}\color{gray}\hrule 
+}
+} %fbox #35
+\end{mybox}
+\end{minipage}
+\hfill
+}%
+\end{document}
